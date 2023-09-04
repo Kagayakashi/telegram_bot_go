@@ -22,18 +22,24 @@ func (h *StartMessageHandler) Message() string {
 }
 
 // Реализация обработчика для сообщения
-func (h *StartMessageHandler) HandleMessage(update *tgbotapi.Update) tgbotapi.Chattable {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Choose button:")
+func (h *StartMessageHandler) HandleMessage(update *tgbotapi.Update) []tgbotapi.Chattable {
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Это стандартный набор кнопок снизу.\r\nНажмите на одну из кнопок.")
 	msg.ReplyMarkup = startButtons()
-	return msg
+
+	response := []tgbotapi.Chattable{msg}
+	return response
 }
 
+// Стандартные кнопки
 func startButtons() tgbotapi.ReplyKeyboardMarkup {
-	button1 := tgbotapi.NewKeyboardButton("Button 1")
-	button2 := tgbotapi.NewKeyboardButton("Button 2")
+	button1 := tgbotapi.NewKeyboardButton("Reply")
+	button2 := tgbotapi.NewKeyboardButton("Forward")
+	button3 := tgbotapi.NewKeyboardButton("Inline buttons")
+	button4 := tgbotapi.NewKeyboardButton("Change buttons")
 
 	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(button1, button2),
+		tgbotapi.NewKeyboardButtonRow(button4, button3),
 	)
 }
 

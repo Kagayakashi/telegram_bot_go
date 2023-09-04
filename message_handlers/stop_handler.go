@@ -19,10 +19,12 @@ func (h *StopMessageHandler) Message() string {
 }
 
 // Реализация обработчика для сообщения
-func (h *StopMessageHandler) HandleMessage(update *tgbotapi.Update) tgbotapi.Chattable {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Вы остановили бота и убрали кнопки.")
+func (h *StopMessageHandler) HandleMessage(update *tgbotapi.Update) []tgbotapi.Chattable {
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Кнопки убраны.")
 	msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-	return msg
+
+	response := []tgbotapi.Chattable{msg}
+	return response
 }
 
 // Инициализация обработчика при импорте

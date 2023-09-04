@@ -21,8 +21,10 @@ func (h *DefaultHandler) Message() string {
 }
 
 // Реализация обработчика для сообщения по умолчанию
-func (h *DefaultHandler) HandleMessage(update *tgbotapi.Update) tgbotapi.Chattable {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Неизвестная команда или сообщение.")
+func (h *DefaultHandler) HandleMessage(update *tgbotapi.Update) []tgbotapi.Chattable {
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Я не понимаю твоего сообщения.")
 	msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-	return msg
+
+	response := []tgbotapi.Chattable{msg}
+	return response
 }

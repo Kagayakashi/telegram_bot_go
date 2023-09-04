@@ -8,13 +8,16 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+const CALLBACK_QUERY_PREFIX = "cbq_"
+
 // Глобальная переменная для хранения обработчиков
 var messageHandlers = make(map[string]MessageHandler)
 var mu sync.RWMutex // Мьютекс для безопасности доступа к коллекции, механизм локов как в БД
 
-// Интерфейс для реализаций обработчиков
+// Интерфейс для реализаций обработчиков.
+// Каждый обработчик может вернуть несколько сообщений для отправки.
 type MessageHandler interface {
-	HandleMessage(update *tgbotapi.Update) tgbotapi.Chattable
+	HandleMessage(update *tgbotapi.Update) []tgbotapi.Chattable
 	Message() string
 }
 

@@ -41,55 +41,37 @@ func main() {
 	for update := range updates {
 		log.Println("Received new message from TelegramBot.")
 
-		if update.Message == nil {
-			log.Println("Message is null. Skip message.")
-			continue
+		msg := ""
+
+		if update.Message != nil {
+			msg = update.Message.Text
 		}
 
-		msg := update.Message.Text
+		callback := update.CallbackData()
+		if callback != "" {
+			msg = message_handlers.CALLBACK_QUERY_PREFIX + callback
+		}
+
+		// Если имеется callback, использовать как msg для обработчика
 		handler, exists := handlers[msg]
 		if !exists {
 			handler = message_handlers.NewDefaultHandler()
 		}
 
-		response := handler.HandleMessage(&update)
-		if response == nil {
+		// В ответе может быть одно или массив сообщений
+		responses := handler.HandleMessage(&update)
+
+		if responses == nil {
 			log.Println("Handler returned null. Expected response.")
 			continue
 		}
 
-		_, err := bot.Send(response)
-		if err != nil {
-			log.Println(err)
+		// Отправить массив сообщений
+		for _, response := range responses {
+			_, err := bot.Send(response)
+			if err != nil {
+				log.Println(err)
+			}
 		}
 	}
 }
-
-/*
-func сhoosePath() tgbotapi.ReplyKeyboardMarkup {
-	good := tgbotapi.NewKeyboardButton(TXT_GOOD)
-	evil := tgbotapi.NewKeyboardButton(TXT_EVIL)
-
-	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(good, evil),
-	)
-}
-
-func evilPath() tgbotapi.InlineKeyboardMarkup {
-	var1 := tgbotapi.NewInlineKeyboardButtonData("Извинится перед ней", "sorry")
-	var2 := tgbotapi.NewInlineKeyboardButtonData("Раздавить до конца", "destroy")
-
-	return tgbotapi.NewInlineKeyboardMarkup(
-		tgbotapi.NewInlineKeyboardRow(var1, var2),
-	)
-}
-
-func goodPath() tgbotapi.InlineKeyboardMarkup {
-	var1 := tgbotapi.NewInlineKeyboardButtonData("Перевести обратно", "walk_back")
-	var2 := tgbotapi.NewInlineKeyboardButtonData("Забыть отдать сумочку", "forget_bag")
-
-	return tgbotapi.NewInlineKeyboardMarkup(
-		tgbotapi.NewInlineKeyboardRow(var1, var2),
-	)
-}
-*/
