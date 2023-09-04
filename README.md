@@ -14,6 +14,25 @@ Handlers are easy to extend, just create another handler like `start_handler.go`
 3. Setup web server like nginx. Web server need to have HTTPS and be available to public with webhook url that you used in your bot settings: `https://example.com`.
     - Second url part `/yoursecrecodestring` will be parsed by bot and need to be in config file.
     - Web server need to pass all requests to local `ip:port` that you going to use in config file.
+Nginx conf:
+```
+upstream backend {
+  server 127.0.0.1:3000;
+}
+
+server {
+  listen 80;
+  server_name tg.dev.simourg.com;
+
+  location @backend {
+    proxy_pass http://backend;
+  }
+
+  location / {
+    try_files $uri @backend;
+  }
+}
+```
 4. Copy `example.config.json` to `config.json`,
 5. Change `config.json` config file. Set there bot token, your secret code and local port you want.
 6. Install library `telegram-bot-api` with command: `go get -u github.com/go-telegram-bot-api/telegram-bot-api/v5`.
