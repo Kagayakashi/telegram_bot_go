@@ -22,7 +22,7 @@ upstream backend {
 
 server {
   listen 80;
-  server_name tg.dev.simourg.com;
+  server_name tg.dev.example.com;
 
   location @backend {
     proxy_pass http://backend;
