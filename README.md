@@ -14,7 +14,7 @@ Handlers are easy to extend, just create another handler like `start_handler.go`
 3. Setup web server like nginx. Web server need to have HTTPS and be available to public with webhook url that you used in your bot settings: `https://example.com`.
     - Second url part `/yoursecrecodestring` will be parsed by bot and need to be in config file.
     - Web server need to pass all requests to local `ip:port` that you going to use in config file.
-Nginx conf:
+    - Nginx conf:
 ```
 upstream backend {
   server 127.0.0.1:3000;
