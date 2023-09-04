@@ -25,6 +25,7 @@ func (h *StopMessageHandler) HandleMessage(update *tgbotapi.Update) tgbotapi.Cha
 	return msg
 }
 
+// Инициализация обработчика при импорте
 func init() {
 	NewStopMessageHandler()
 }

@@ -23,7 +23,7 @@ func (h *StartMessageHandler) Message() string {
 
 // Реализация обработчика для сообщения
 func (h *StartMessageHandler) HandleMessage(update *tgbotapi.Update) tgbotapi.Chattable {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Выберите кнопку:")
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Choose button:")
 	msg.ReplyMarkup = startButtons()
 	return msg
 }
@@ -37,6 +37,7 @@ func startButtons() tgbotapi.ReplyKeyboardMarkup {
 	)
 }
 
+// Инициализация обработчика при импорте
 func init() {
 	NewStartMessageHandler()
 }
